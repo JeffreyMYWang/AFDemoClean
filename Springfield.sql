@@ -35,6 +35,42 @@ CASE
 WHEN A.[Type] in (808,810,813,814,817,818,830,833) THEN 1
 													ELSE 1
 END)
+			     From sel.items I
+Join sel.areas A on A.id = I.area
+Where A.id like '237.5.4.%'
+			     
+UPDATE I
+SET surveycondition =(
+CASE
+-- EXTERNALS
+WHEN A.[Type] in (792,795) 
+		THEN	RAND(CONVERT(VARBINARY, NEWID()))*(1.51)+2
+ELSE	CASE
+-- RANDOMIZER FOR NEED TO REFURB
+			WHEN A.Id IN  (SELECT CASE
+						WHEN RAND(CONVERT(VARBINARY, NEWID()))<0.3
+						THEN Id
+								END AS Id
+						FROM sel.areas) THEN RAND(CONVERT(VARBINARY, NEWID()))*(1.01)+4
+-- RANDOMIZER FOR REFURBED
+			WHEN A.Id IN (SELECT CASE
+						WHEN RAND(CONVERT(VARBINARY, NEWID()))>0.7
+						Then Id
+								END As Id
+						From sel.areas) then RAND(CONVERT(VARBINARY, NEWID()))*(1.51)+1
+-- EVERYTHING ELSE
+						ELSE RAND(CONVERT(VARBINARY, NEWID()))*(2.01)+2
+						END
+			END),
+						
+DutyFactor = (
+CASE 
+WHEN A.[Type] in (808,810,813,814,817,818,830,833) THEN 1.2
+													ELSE 1
+END)
+From sel.items I
+Join sel.areas A on A.id = I.area
+Where A.id like '237.5.2.%'
 
 Select *
 From Sel.areas
