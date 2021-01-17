@@ -35,3 +35,11 @@ CASE
 WHEN A.[Type] in (808,810,813,814,817,818,830,833) THEN 1
 													ELSE 1
 END)
+
+Select *
+From Sel.areas
+Where Id IN (Select case
+When rand(convert(varbinary, newid()))>0.5
+Then Id
+end As Id
+From sel.areas) and ID like '237.5.2.%' 
