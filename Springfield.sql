@@ -33,7 +33,7 @@ END),
 DutyFactor = (
 CASE 
 WHEN A.[Type] in (808,810,813,814,817,818,830,833) THEN 1
-													ELSE 1
+						ELSE 1
 END)
 			     From sel.items I
 Join sel.areas A on A.id = I.area
